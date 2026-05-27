@@ -9,17 +9,14 @@ import java.time.LocalDateTime;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class TramiteRequestDTO {
 
-    @NotBlank(message = "El número de trámite es obligatorio")
-    private String numeroTramite;
-
     @NotNull(message = "El ID del paciente es obligatorio")
     private Long pacienteId;
 
     private LocalDateTime fechaTramite;
 
-    private Tramite.TipoIngreso tipoIngreso;
+    private String ingreso;
 
-    private String servicioOrigen;
+    private String servicio;
 
     private Integer tipoSolicitudId;
 

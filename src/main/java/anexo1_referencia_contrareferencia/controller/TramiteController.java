@@ -1,6 +1,7 @@
 package anexo1_referencia_contrareferencia.controller;
 
 import anexo1_referencia_contrareferencia.model.dto.request.TramiteRequestDTO;
+import anexo1_referencia_contrareferencia.model.dto.response.TramiteCompletoResponseDTO;
 import anexo1_referencia_contrareferencia.model.dto.response.TramiteResponseDTO;
 import anexo1_referencia_contrareferencia.service.TramiteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,12 @@ public class TramiteController {
     @GetMapping
     public ResponseEntity<List<TramiteResponseDTO>> listarTodos() {
         return ResponseEntity.ok(tramiteService.listarTodos());
+    }
+
+    @Operation(summary = "Listar trámites con seguimientos, egreso y ambulatorio", tags = {"Trámites"})
+    @GetMapping("/completos")
+    public ResponseEntity<List<TramiteCompletoResponseDTO>> listarCompletos() {
+        return ResponseEntity.ok(tramiteService.listarCompletos());
     }
 
     @Operation(summary = "Actualizar trámite", tags = {"Trámites"})

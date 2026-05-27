@@ -12,28 +12,24 @@ import java.util.List;
 public class Tramite {
 
     public enum Estado { PENDIENTE, EN_PROCESO, CERRADO, ANULADO }
-    public enum TipoIngreso { URGENCIAS, HOSPITALIZACION, CONSULTA_EXTERNA, CIRUGIA, OTRO }
+    //public enum Ingreso { URGENCIAS, HOSPITALIZACION, CONSULTA_EXTERNA, CIRUGIA, OTRO }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "numero_tramite", nullable = false, unique = true, length = 30)
-    private String numeroTramite;
+    @Column(name = "fecha_tramite", nullable = false)
+    private LocalDateTime fechaTramite;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
-    @Column(name = "fecha_tramite", nullable = false)
-    private LocalDateTime fechaTramite;
+    @Column(length = 50)
+    private String ingreso;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_ingreso", length = 30)
-    private TipoIngreso tipoIngreso;
-
-    @Column(name = "servicio_origen", length = 100)
-    private String servicioOrigen;
+    @Column(name = "servicio", length = 100)
+    private String servicio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_solicitud_id")

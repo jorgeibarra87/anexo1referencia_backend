@@ -32,7 +32,9 @@ public class EgresoController {
     @Operation(summary = "Obtener egreso por ID de trámite", tags = {"Egresos"})
     @GetMapping("/tramite/{tramiteId}")
     public ResponseEntity<EgresoResponseDTO> obtenerPorTramiteId(@PathVariable Long tramiteId) {
-        return ResponseEntity.ok(egresoService.obtenerPorTramiteId(tramiteId));
+        return egresoService.obtenerPorTramiteId(tramiteId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
     }
 
     @Operation(summary = "Actualizar egreso", tags = {"Egresos"})

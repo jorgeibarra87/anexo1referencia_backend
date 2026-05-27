@@ -27,8 +27,8 @@ public class SeguimientoAmbulatorio {
     @Builder.Default
     private String estado = "ACTIVO";
 
-    @Column(name = "usuario", length = 200)
-    private String usuario;
+    @Column(name = "auxiliar_referencia", length = 200)
+    private String auxiliarReferencia;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -30,8 +30,13 @@ public class SeguimientoAmbulatorioServiceImpl implements SeguimientoAmbulatorio
         Tramite tramite = tramiteRepository.findById(request.getTramiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Tramite no encontrado con id: " + request.getTramiteId()));
 
-        SeguimientoAmbulatorio entity = modelMapper.map(request, SeguimientoAmbulatorio.class);
-        entity.setTramite(tramite);
+        SeguimientoAmbulatorio entity = SeguimientoAmbulatorio.builder()
+                .tramite(tramite)
+                .fechaNota(request.getFechaNota() != null ? request.getFechaNota() : java.time.LocalDateTime.now())
+                .notaSeguimiento(request.getNotaSeguimiento())
+                .estado(request.getEstado() != null ? request.getEstado() : "ACTIVO")
+                .auxiliarReferencia(request.getAuxiliarReferencia())
+                .build();
 
         return modelMapper.map(repository.save(entity), SeguimientoAmbulatorioResponseDTO.class);
     }
@@ -63,7 +68,9 @@ public class SeguimientoAmbulatorioServiceImpl implements SeguimientoAmbulatorio
             entity.setTramite(tramite);
         }
 
-        modelMapper.map(request, entity);
+        if (request.getNotaSeguimiento() != null) entity.setNotaSeguimiento(request.getNotaSeguimiento());
+        if (request.getEstado() != null) entity.setEstado(request.getEstado());
+        if (request.getAuxiliarReferencia() != null) entity.setAuxiliarReferencia(request.getAuxiliarReferencia());
         return modelMapper.map(repository.save(entity), SeguimientoAmbulatorioResponseDTO.class);
     }
 

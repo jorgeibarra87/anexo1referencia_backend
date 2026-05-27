@@ -1,8 +1,12 @@
 package anexo1_referencia_contrareferencia.service.impl;
 
 import anexo1_referencia_contrareferencia.model.dto.request.TramiteRequestDTO;
+import anexo1_referencia_contrareferencia.model.dto.response.TramiteCompletoResponseDTO;
 import anexo1_referencia_contrareferencia.model.dto.response.TramiteResponseDTO;
+import anexo1_referencia_contrareferencia.model.entity.Egreso;
 import anexo1_referencia_contrareferencia.model.entity.Paciente;
+import anexo1_referencia_contrareferencia.model.entity.SeguimientoAmbulatorio;
+import anexo1_referencia_contrareferencia.model.entity.SeguimientoIntrahospitalario;
 import anexo1_referencia_contrareferencia.model.entity.TipoSolicitudCatalogo;
 import anexo1_referencia_contrareferencia.model.entity.Tramite;
 import anexo1_referencia_contrareferencia.repository.PacienteRepository;
@@ -34,10 +38,10 @@ public class TramiteServiceImpl implements TramiteService {
                 .orElseThrow(() -> new EntityNotFoundException("Paciente no encontrado con id: " + request.getPacienteId()));
 
         Tramite entity = new Tramite();
-        entity.setNumeroTramite(request.getNumeroTramite());
+        //entity.setNumeroTramite(request.getNumeroTramite());
         entity.setPaciente(paciente);
-        entity.setTipoIngreso(request.getTipoIngreso());
-        entity.setServicioOrigen(request.getServicioOrigen());
+        entity.setIngreso(request.getIngreso());
+        entity.setServicio(request.getServicio());
         entity.setDescripcion(request.getDescripcion());
         entity.setAuxiliarReferencia(request.getAuxiliarReferencia());
         if (request.getEstado() != null) {
@@ -66,6 +70,14 @@ public class TramiteServiceImpl implements TramiteService {
     public List<TramiteResponseDTO> listarTodos() {
         return tramiteRepository.findAll().stream()
                 .map(this::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TramiteCompletoResponseDTO> listarCompletos() {
+        return tramiteRepository.findAll().stream()
+                .map(this::toCompletoResponseDTO)
                 .toList();
     }
 
@@ -109,9 +121,40 @@ public class TramiteServiceImpl implements TramiteService {
         TramiteResponseDTO dto = modelMapper.map(entity, TramiteResponseDTO.class);
         dto.setPacienteId(entity.getPaciente().getId());
         dto.setPacienteNombre(entity.getPaciente().getNombreCompleto());
+        dto.setPacienteDocumento(entity.getPaciente().getNumeroDocumento());
+        dto.setPacienteEps(entity.getPaciente().getEps());
         if (entity.getTipoSolicitud() != null) {
             dto.setTipoSolicitudId(entity.getTipoSolicitud().getId());
             dto.setTipoSolicitudDescripcion(entity.getTipoSolicitud().getDescripcion());
+        }
+        return dto;
+    }
+
+    private TramiteCompletoResponseDTO toCompletoResponseDTO(Tramite entity) {
+        TramiteCompletoResponseDTO dto = modelMapper.map(entity, TramiteCompletoResponseDTO.class);
+        dto.setPacienteNombre(entity.getPaciente().getNombreCompleto());
+        dto.setPacienteDocumento(entity.getPaciente().getNumeroDocumento());
+        dto.setPacienteEps(entity.getPaciente().getEps());
+        dto.setEstado(entity.getEstado().name());
+        if (entity.getTipoSolicitud() != null) {
+            dto.setTipoSolicitudDescripcion(entity.getTipoSolicitud().getDescripcion());
+        }
+        if (entity.getEgreso() != null) {
+            Egreso e = entity.getEgreso();
+            dto.setEgresoServicio(e.getServicioEgreso());
+            dto.setEgresoFecha(e.getFechaEgreso());
+        }
+        if (entity.getSeguimientosIntra() != null && !entity.getSeguimientosIntra().isEmpty()) {
+            SeguimientoIntrahospitalario s = entity.getSeguimientosIntra().get(entity.getSeguimientosIntra().size() - 1);
+            dto.setIntraFechaSeguimiento(s.getFechaSeguimiento());
+            dto.setIntraAutorizacion(s.getAutorizacion());
+            dto.setIntraEstadoAutorizacion(s.getEstadoAutorizacion().name());
+            dto.setIntraAuxiliarReferencia(s.getAuxiliarReferencia());
+        }
+        if (entity.getSeguimientosAmbulatorios() != null && !entity.getSeguimientosAmbulatorios().isEmpty()) {
+            SeguimientoAmbulatorio s = entity.getSeguimientosAmbulatorios().get(entity.getSeguimientosAmbulatorios().size() - 1);
+            dto.setAmbulatorioNotaSeguimiento(s.getNotaSeguimiento());
+            dto.setAmbulatorioFechaNota(s.getFechaNota());
         }
         return dto;
     }

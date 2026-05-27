@@ -13,9 +13,7 @@ public class SeguimientoIntrahospitalarioRequestDTO {
 
     private LocalDateTime fechaSeguimiento;
 
-    private String prestadorAutorizado;
-
-    private String numeroAutorizacion;
+    private String autorizacion;
 
     private SeguimientoIntrahospitalario.EstadoAutorizacion estadoAutorizacion;
 

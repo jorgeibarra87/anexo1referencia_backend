@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TramiteRepository extends JpaRepository<Tramite, Long> {
-    Optional<Tramite> findByNumeroTramite(String numeroTramite);
+    //Optional<Tramite> findByNumeroTramite(String numeroTramite);
     List<Tramite> findByPacienteId(Long pacienteId);
     List<Tramite> findByFechaTramiteBetween(LocalDateTime inicio, LocalDateTime fin);
 }

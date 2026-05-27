@@ -22,11 +22,8 @@ public class SeguimientoIntrahospitalario {
     @Column(name = "fecha_seguimiento", nullable = false)
     private LocalDateTime fechaSeguimiento;
 
-    @Column(name = "prestador_autorizado", length = 200)
-    private String prestadorAutorizado;
-
-    @Column(name = "numero_autorizacion", length = 50)
-    private String numeroAutorizacion;
+    @Column(columnDefinition = "TEXT")
+    private String autorizacion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_autorizacion", nullable = false, length = 20)
@@ -35,9 +32,6 @@ public class SeguimientoIntrahospitalario {
 
     @Column(name = "auxiliar_referencia", length = 200)
     private String auxiliarReferencia;
-
-    @Column(columnDefinition = "TEXT")
-    private String observaciones;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -18,5 +18,5 @@ public class SeguimientoAmbulatorioRequestDTO {
 
     private String estado;
 
-    private String usuario;
+    private String auxiliarReferencia;
 }

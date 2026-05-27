@@ -44,10 +44,9 @@ public class EgresoServiceImpl implements EgresoService {
 
     @Override
     @Transactional(readOnly = true)
-    public EgresoResponseDTO obtenerPorTramiteId(Long tramiteId) {
-        Egreso entity = egresoRepository.findByTramiteId(tramiteId)
-                .orElseThrow(() -> new EntityNotFoundException("Egreso no encontrado para tramiteId: " + tramiteId));
-        return modelMapper.map(entity, EgresoResponseDTO.class);
+    public java.util.Optional<EgresoResponseDTO> obtenerPorTramiteId(Long tramiteId) {
+        return egresoRepository.findByTramiteId(tramiteId)
+                .map(entity -> modelMapper.map(entity, EgresoResponseDTO.class));
     }
 
     @Override

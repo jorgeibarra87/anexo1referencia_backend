@@ -3,6 +3,7 @@ package anexo1_referencia_contrareferencia.service.impl;
 import anexo1_referencia_contrareferencia.model.dto.request.SeguimientoIntrahospitalarioRequestDTO;
 import anexo1_referencia_contrareferencia.model.dto.response.SeguimientoIntrahospitalarioResponseDTO;
 import anexo1_referencia_contrareferencia.model.entity.SeguimientoIntrahospitalario;
+import anexo1_referencia_contrareferencia.model.entity.SeguimientoIntrahospitalario.EstadoAutorizacion;
 import anexo1_referencia_contrareferencia.model.entity.Tramite;
 import anexo1_referencia_contrareferencia.repository.SeguimientoIntrahospitalarioRepository;
 import anexo1_referencia_contrareferencia.repository.TramiteRepository;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,8 +32,13 @@ public class SeguimientoIntrahospitalarioServiceImpl implements SeguimientoIntra
         Tramite tramite = tramiteRepository.findById(request.getTramiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Tramite no encontrado con id: " + request.getTramiteId()));
 
-        SeguimientoIntrahospitalario entity = modelMapper.map(request, SeguimientoIntrahospitalario.class);
-        entity.setTramite(tramite);
+        SeguimientoIntrahospitalario entity = SeguimientoIntrahospitalario.builder()
+                .tramite(tramite)
+                .fechaSeguimiento(request.getFechaSeguimiento() != null ? request.getFechaSeguimiento() : LocalDateTime.now())
+                .autorizacion(request.getAutorizacion())
+                .estadoAutorizacion(request.getEstadoAutorizacion() != null ? request.getEstadoAutorizacion() : EstadoAutorizacion.PENDIENTE)
+                .auxiliarReferencia(request.getAuxiliarReferencia())
+                .build();
 
         return modelMapper.map(repository.save(entity), SeguimientoIntrahospitalarioResponseDTO.class);
     }
@@ -63,7 +70,11 @@ public class SeguimientoIntrahospitalarioServiceImpl implements SeguimientoIntra
             entity.setTramite(tramite);
         }
 
-        modelMapper.map(request, entity);
+        if (request.getFechaSeguimiento() != null) entity.setFechaSeguimiento(request.getFechaSeguimiento());
+        if (request.getAutorizacion() != null) entity.setAutorizacion(request.getAutorizacion());
+        if (request.getEstadoAutorizacion() != null) entity.setEstadoAutorizacion(request.getEstadoAutorizacion());
+        if (request.getAuxiliarReferencia() != null) entity.setAuxiliarReferencia(request.getAuxiliarReferencia());
+
         return modelMapper.map(repository.save(entity), SeguimientoIntrahospitalarioResponseDTO.class);
     }
 
