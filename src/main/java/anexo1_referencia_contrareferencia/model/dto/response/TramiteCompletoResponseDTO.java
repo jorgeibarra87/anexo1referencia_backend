@@ -2,6 +2,7 @@ package anexo1_referencia_contrareferencia.model.dto.response;
 
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class TramiteCompletoResponseDTO {
@@ -20,6 +21,7 @@ public class TramiteCompletoResponseDTO {
     private String intraAutorizacion;
     private String intraEstadoAutorizacion;
     private String intraAuxiliarReferencia;
+    private List<IntraResumenDTO> intraSeguimientos;
     private String egresoServicio;
     private LocalDateTime egresoFecha;
     private String ambulatorioNotaSeguimiento;

@@ -2,6 +2,7 @@ package anexo1_referencia_contrareferencia.service.impl;
 
 import anexo1_referencia_contrareferencia.model.dto.request.TramiteRequestDTO;
 import anexo1_referencia_contrareferencia.model.dto.response.TramiteCompletoResponseDTO;
+import anexo1_referencia_contrareferencia.model.dto.response.IntraResumenDTO;
 import anexo1_referencia_contrareferencia.model.dto.response.TramiteResponseDTO;
 import anexo1_referencia_contrareferencia.model.entity.Egreso;
 import anexo1_referencia_contrareferencia.model.entity.Paciente;
@@ -150,6 +151,14 @@ public class TramiteServiceImpl implements TramiteService {
             dto.setIntraAutorizacion(s.getAutorizacion());
             dto.setIntraEstadoAutorizacion(s.getEstadoAutorizacion().name());
             dto.setIntraAuxiliarReferencia(s.getAuxiliarReferencia());
+            dto.setIntraSeguimientos(entity.getSeguimientosIntra().stream()
+                    .map(si -> IntraResumenDTO.builder()
+                            .fechaSeguimiento(si.getFechaSeguimiento())
+                            .autorizacion(si.getAutorizacion())
+                            .estadoAutorizacion(si.getEstadoAutorizacion().name())
+                            .auxiliarReferencia(si.getAuxiliarReferencia())
+                            .build())
+                    .toList());
         }
         if (entity.getSeguimientosAmbulatorios() != null && !entity.getSeguimientosAmbulatorios().isEmpty()) {
             SeguimientoAmbulatorio s = entity.getSeguimientosAmbulatorios().get(entity.getSeguimientosAmbulatorios().size() - 1);

@@ -10,6 +10,6 @@ public class SeguimientoAmbulatorioResponseDTO {
     private LocalDateTime fechaNota;
     private String notaSeguimiento;
     private String estado;
-    private String usuario;
+    private String auxiliarReferencia;
     private LocalDateTime createdAt;
 }

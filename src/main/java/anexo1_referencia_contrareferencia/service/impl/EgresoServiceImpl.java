@@ -28,8 +28,12 @@ public class EgresoServiceImpl implements EgresoService {
         Tramite tramite = tramiteRepository.findById(request.getTramiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Tramite no encontrado con id: " + request.getTramiteId()));
 
-        Egreso entity = modelMapper.map(request, Egreso.class);
-        entity.setTramite(tramite);
+        Egreso entity = Egreso.builder()
+                .tramite(tramite)
+                .servicioEgreso(request.getServicioEgreso())
+                .fechaEgreso(request.getFechaEgreso())
+                .observaciones(request.getObservaciones())
+                .build();
 
         return modelMapper.map(egresoRepository.save(entity), EgresoResponseDTO.class);
     }
@@ -60,7 +64,9 @@ public class EgresoServiceImpl implements EgresoService {
             entity.setTramite(tramite);
         }
 
-        modelMapper.map(request, entity);
+        if (request.getServicioEgreso() != null) entity.setServicioEgreso(request.getServicioEgreso());
+        if (request.getFechaEgreso() != null) entity.setFechaEgreso(request.getFechaEgreso());
+        entity.setObservaciones(request.getObservaciones());
         return modelMapper.map(egresoRepository.save(entity), EgresoResponseDTO.class);
     }
 

@@ -26,6 +26,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("http://localhost:5176");
+        config.addAllowedOrigin("http://192.168.22.148:5176");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

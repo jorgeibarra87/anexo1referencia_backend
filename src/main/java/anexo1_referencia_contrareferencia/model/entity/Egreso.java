@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Egreso {
 
-    public enum TipoEgreso { ALTA_MEDICA, TRASLADO, VOLUNTARIA, DEFUNCION, OTRO }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,11 +22,6 @@ public class Egreso {
 
     @Column(name = "fecha_egreso", nullable = false)
     private LocalDateTime fechaEgreso;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_egreso", nullable = false, length = 20)
-    @Builder.Default
-    private TipoEgreso tipoEgreso = TipoEgreso.ALTA_MEDICA;
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;
