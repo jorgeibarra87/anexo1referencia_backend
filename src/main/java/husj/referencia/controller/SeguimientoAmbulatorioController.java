@@ -19,6 +19,11 @@ public class SeguimientoAmbulatorioController {
 
     private final SeguimientoAmbulatorioService service;
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalState(IllegalStateException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @Operation(summary = "Crear seguimiento ambulatorio", tags = {"Seguimientos Ambulatorios"})
     @PostMapping
     public ResponseEntity<SeguimientoAmbulatorioResponseDTO> crear(@Valid @RequestBody SeguimientoAmbulatorioRequestDTO request) {
