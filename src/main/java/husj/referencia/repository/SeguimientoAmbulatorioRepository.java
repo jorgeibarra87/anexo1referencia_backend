@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SeguimientoAmbulatorioRepository extends JpaRepository<SeguimientoAmbulatorio, Long> {
     List<SeguimientoAmbulatorio> findByTramiteIdOrderByFechaNotaDesc(Long tramiteId);
+    boolean existsByTramiteId(Long tramiteId);
 }

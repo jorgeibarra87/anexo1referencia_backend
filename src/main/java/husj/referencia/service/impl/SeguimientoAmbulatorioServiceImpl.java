@@ -27,6 +27,9 @@ public class SeguimientoAmbulatorioServiceImpl implements SeguimientoAmbulatorio
     @Override
     @Transactional
     public SeguimientoAmbulatorioResponseDTO crear(SeguimientoAmbulatorioRequestDTO request) {
+        if (repository.existsByTramiteId(request.getTramiteId())) {
+            throw new IllegalStateException("Ya existe un seguimiento ambulatorio para este trámite");
+        }
         Tramite tramite = tramiteRepository.findById(request.getTramiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Tramite no encontrado con id: " + request.getTramiteId()));
 
